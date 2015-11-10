@@ -24,7 +24,7 @@ public class Bank {
     //Make sure correct plural of word is created based on the number passed in:
     //If number passed in is 1 just return the word otherwise add an 's' at the end
     private String format(int number, String word) {
-        return number + " " + (number == 1 ? word : word + "s");
+        return number + " " + (number == 1 ? word : word.concat("s"));
     }
 
     public double totalInterestPaid() {
@@ -43,4 +43,19 @@ public class Bank {
             return "Error";
         }
     }
+    /**
+     * This method can be used to calculate the 
+     * total give away by the bank on the daily basis
+     * this can be useful for long term profit and loss calculation
+     * 
+     * @return
+     */
+    public double accrueDailyInterest(){
+    	double totalInterestPaidToday=0;
+    	for(Customer customer:customers){
+    		totalInterestPaidToday+=customer.accrueDailyInterest();
+    	}
+    	return totalInterestPaidToday;
+    }
+    
 }

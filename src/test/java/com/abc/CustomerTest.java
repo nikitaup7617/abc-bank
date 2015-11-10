@@ -38,6 +38,14 @@ public class CustomerTest {
         Customer oscar = new Customer("Oscar").openAccount(new Account(Account.SAVINGS));
         assertEquals(1, oscar.getNumberOfAccounts());
     }
+    
+    @Test
+    public void testAlreadyExistingAccount(){
+        Customer jim = new Customer("Jim");
+        jim.openAccount(new Account(Account.SAVINGS));
+        jim.openAccount(new Account(Account.SAVINGS));
+        assertEquals(1, jim.getNumberOfAccounts());
+    }
 
     @Test
     public void testTwoAccount(){

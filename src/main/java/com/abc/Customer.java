@@ -19,6 +19,17 @@ public class Customer {
     }
 
     public Customer openAccount(Account account) {
+    	
+    	//Added logic for checking if account is already in existance for the 
+    	//current customer
+    	if(accounts.size()>0){
+    		for(Account existingAccount:accounts){
+    			if(existingAccount.getAccountType()==account.getAccountType()){
+    			System.out.println("---Account already in existance---");
+    			return this;
+    		 }
+    	  }
+    	}
         accounts.add(account);
         return this;
     }
@@ -29,8 +40,9 @@ public class Customer {
 
     public double totalInterestEarned() {
         double total = 0;
-        for (Account a : accounts)
+        for (Account a : accounts){
             total += a.interestEarned();
+        }    
         return total;
     }
 
@@ -65,6 +77,11 @@ public class Customer {
         //Now total up all the transactions
         double total = 0.0;
         for (Transaction t : a.transactions) {
+            //As per division of responsibility the Transaction class should be responsible for
+        	//taking care of producing balance and managing running balance functionality
+        	//is placed in the code but to add functionality to existing code it is not used here
+        	//if want to uncomment s+=t; and comment S+= next line although output for Junit will be differnt
+        	//        	s+= t+"\n";
             s += "  " + (t.amount < 0 ? "withdrawal" : "deposit") + " " + toDollars(t.amount) + "\n";
             total += t.amount;
         }
@@ -72,7 +89,26 @@ public class Customer {
         return s;
     }
 
+    
+    
     private String toDollars(double d){
         return String.format("$%,.2f", abs(d));
     }
+    
+    /**
+     * Method for accuring interest in the balance on daily basis
+     * This method can be bind with a manual trigger or automatic event
+     * for performing operation at specific time of a day like 12 AM 
+     *
+     * @return
+     */
+
+	public double accrueDailyInterest() {
+		double totalEarningToday=0;
+		for(Account account:accounts){
+			totalEarningToday+=account.accrueDailyInterest();
+		}
+		return totalEarningToday;
+		
+	}
 }
